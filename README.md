@@ -2,7 +2,7 @@
 
 ## Title
 
-# <h1 align="center">audIoTvuln:</h1>
+<h1 align="center">audIoTvuln</h1>
 
 ## Project description
 
