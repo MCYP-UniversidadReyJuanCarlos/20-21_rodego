@@ -9,3 +9,11 @@ services:
     volumes:
       - ./data:/usr/src/app/data
     network_mode: host
+  nmap:
+    container_name: nmap
+    privileged: true
+    build: ./nmap/
+    image: nmap
+    volumes:
+      - ./data:/usr/src/app/data
+    network_mode: host
