@@ -33,3 +33,14 @@ services:
     volumes:
       - ./data:/usr/src/app/firmware_data
     network_mode: host
+  web:
+    container_name: web
+    privileged: true
+    build: ./tfm/
+    image: web
+    ports: 
+      - 9090:9090
+    volumes:
+      - ./data:/data
+    environment: 
+      TFM_DATA: ${TFM_DATA:-/data}

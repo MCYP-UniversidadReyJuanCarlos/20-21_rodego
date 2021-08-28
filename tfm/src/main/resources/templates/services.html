@@ -1,0 +1,39 @@
+{{>layout/header}}
+<body>
+ 	<div class="container">
+		<div class="starter-template">
+		<h2 style="text-align: center;">Open ports and exposed services found in the devices</h2>
+		<table>
+		  	<tr>
+		    	<th>Vendor</th>
+		    	<th>IP</th>
+		    	<th>MAC</th>
+		    	<th>Operative System</th>
+		    	<th>Open ports</th>
+		  	</tr>
+		  	{{#services}}
+				<tr>
+				    <td>{{vendor}}</td>
+				    <td>{{ip}}</td>
+				    <td>{{mac}}</td>
+				    <td>{{operativeSystem}}</td>
+				    <td>				    	
+				    	
+				    	{{#openPorts}}
+				    	<ul>
+				    		<li>Service name: {{service}}</li>
+				    		<li>Port: {{port}}</li>
+				    		<li>Protocol: {{protocol}}</li>	
+				    	</ul>
+				    	{{/openPorts}}
+				    </td>
+				</tr>
+			{{/services}}
+		</table>
+		</div>
+
+		<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</div>
+</body>
+{{>layout/footer}}
+	
