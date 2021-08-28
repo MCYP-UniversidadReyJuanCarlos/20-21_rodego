@@ -17,3 +17,19 @@ services:
     volumes:
       - ./data:/usr/src/app/data
     network_mode: host
+  firmware:
+    container_name: firmware
+    privileged: true
+    build: ./firmware/
+    image: firmware
+    volumes:
+      - ./data:/usr/src/app/data
+    network_mode: host
+  firmwalker:
+    container_name: firmwalker
+    privileged: true
+    build: ./firmwalker/
+    image: firmwalker
+    volumes:
+      - ./data:/usr/src/app/firmware_data
+    network_mode: host
