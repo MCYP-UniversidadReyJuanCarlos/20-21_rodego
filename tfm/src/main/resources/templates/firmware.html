@@ -1,0 +1,19 @@
+{{>layout/header}}
+<body>
+ 	<div class="container">
+		<div class="starter-template" align="center">
+		<h1 style="text-align: center;">Results from firmware analysis</h1>
+		{{#lines}}
+		<h5 style="display: none;">{{line}}</h5>
+		<h4 style="display: none;">{{line}}</h4>
+		<ul>		
+			<li style="display: none;">{{line}}</li>
+		</ul>
+		{{/lines}}
+		</div>
+		
+		<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</div>
+</body>
+{{>layout/footer}}
+	

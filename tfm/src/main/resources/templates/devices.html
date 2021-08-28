@@ -1,0 +1,25 @@
+{{>layout/header}}
+<body>
+ 	<div class="container">
+		<div class="starter-template">
+		<h2 style="text-align: center;">List of devices found in the network</h2>
+		<table>
+		  	<tr>
+		    	<th>Vendor</th>
+		    	<th>IP</th>
+		    	<th>MAC</th>
+		  	</tr>
+		  	{{#devices}}
+				<tr>
+				    <td>{{vendor}}</td>
+				    <td>{{ip}}</td>
+				    <td>{{mac}}</td>
+				</tr>
+			{{/devices}}
+		</table>
+		</div>
+
+		<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</div>
+</body>
+{{>layout/footer}}
