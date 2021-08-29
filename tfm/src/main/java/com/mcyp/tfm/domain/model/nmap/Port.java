@@ -1,5 +1,7 @@
 package com.mcyp.tfm.domain.model.nmap;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,5 +19,8 @@ public class Port {
 	
 	@JsonProperty("service")
 	private Service service;
+
+	@JsonProperty("script")
+	private List<Script> script;
 
 }

@@ -1,0 +1,56 @@
+{{>layout/header}}
+<body>
+ 	<div class="container">
+		<div class="starter-template">
+		<h2 style="text-align: center;">Open ports and exposed services found in the devices</h2>
+		<table>
+		  	<tr>
+		    	<th>Vendor</th>
+		    	<th>IP</th>
+		    	<th>MAC</th>
+		    	<th>Vulnerabilities</th>
+		    	<th>Vulnerabilities additional info</th>
+		  	</tr>
+		  	{{#vulnerabilities}}
+				<tr>
+				    <td>{{vendor}}</td>
+				    <td>{{ip}}</td>
+				    <td>{{mac}}</td>
+				    <td>
+				    {{#script}}
+				    	{{#scriptType}}
+				    	<ul>
+				    		<li>Vulnerability name: {{name}}</li>
+				    		<li>Info: {{result}}</li>
+				    	</ul>
+				    	{{/scriptType}}
+				    {{/script}}
+				    </td>
+				    <td>
+				    {{#script}}
+				    	{{#vulnerabilityInfoList}}
+				    	<ul>
+				    		<li>Vulnerability cve: {{cve}}</li>
+				    		<li>state: {{state}}</li>
+				    		<li>Vulnerability name: {{name}}</li>
+				    		<li>disclosure: {{disclosure}}</li>
+				    		<li>Vulnerability description: {{description}}</li>
+				    		<li>References: 
+				    		{{#references}}
+				    			
+				    		{{/references}}
+				    		</li>
+				    	</ul>
+				    	{{/vulnerabilityInfoList}}
+				    {{/script}}
+				    </td>				    				    
+				</tr>
+			{{/vulnerabilities}}
+		</table>
+		</div>
+
+		<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</div>
+</body>
+{{>layout/footer}}
+	

@@ -12,6 +12,7 @@ import com.mcyp.tfm.domain.model.ServiceInfo;
 import com.mcyp.tfm.domain.model.ServicePort;
 import com.mcyp.tfm.domain.model.nmap.Address;
 import com.mcyp.tfm.domain.model.nmap.Host;
+import com.mcyp.tfm.domain.model.nmap.NmapResult;
 import com.mcyp.tfm.domain.model.nmap.OperativeSystem;
 import com.mcyp.tfm.domain.model.nmap.OperativeSystemMatch;
 import com.mcyp.tfm.domain.model.nmap.Port;
