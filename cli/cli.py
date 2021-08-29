@@ -37,6 +37,8 @@ class CliApplication():
             self.firmware()
         elif action == 'portsAndServices':
             self.devices_services_and_ports()
+        elif action == 'vulnerabilities':
+            self.vulnerabilities()
         
     def list_devices(self):
         print('listDevices')
@@ -62,6 +64,11 @@ class CliApplication():
     def devices_services_and_ports(self):
         print('devicesServicesAndPorts')
         response = requests.get("http://localhost:5000/services")
+    
+    def vulnerabilities(self):
+        ip = answers['vulnerabilities']
+        print('vulnerabilities')
+        response = requests.get("http://localhost:5000/vulnerabilities/" + ip)
 
 
 print("\n                audIoTVuln \n")
@@ -86,6 +93,11 @@ questions = [
                 'key': 'portsAndServices',
                 'name': 'Analyze open ports and exposed services',
                 'value': 'portsAndServices'
+            },
+            {
+                'key': 'vulnerabilities',
+                'name': 'List possbile vulnerbilities, you will be requested for the target ip',
+                'value': 'vulnerabilities'
             }
         ]
     },
@@ -95,6 +107,13 @@ questions = [
         'message': 'Introduce the file name(including the extension) to analyze, should be within the folder "data/firmware',
         'filter': lambda val: str(val),
         'when': lambda answers: answers['actions'] == 'firmware'
+    },
+    {
+        'type': 'input',
+        'name': 'vulnerabilities',
+        'message': 'Introduce the target ip',
+        'filter': lambda val: str(val),
+        'when': lambda answers: answers['actions'] == 'vulnerabilities'
     }
 ]
 

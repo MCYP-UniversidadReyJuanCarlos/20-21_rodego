@@ -21,6 +21,12 @@ class PortsAndServices(Resource):
         to_json('services')
         return jsonify({'message': 'OK'})
 
+class Vulnerabilities(Resource):
+    def get(self, ip):
+        os.system("sudo nmap --script=vuln -p- " + ip + " -oX data/nmap/vulns.xml")
+        to_json('vulns')
+        return jsonify({'message': 'OK'})
+
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
         xpars = xmltodict.parse(fd.read())
@@ -32,6 +38,7 @@ def to_json(filename):
 
 api.add_resource(ListDevices, '/devices')
 api.add_resource(PortsAndServices, '/services')
+api.add_resource(Vulnerabilities, '/vulnerabilities/<string:ip>')
 
 if __name__ == '__main__':
   

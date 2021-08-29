@@ -15,5 +15,6 @@ public class ServiceInfo {
     private List<ServicePort> openPorts;
     private String operativeSystem;
     private String connectedFrom;
+    private List<ScriptResponse> script;
     
 }
