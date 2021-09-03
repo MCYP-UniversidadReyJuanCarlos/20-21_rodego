@@ -43,6 +43,8 @@ class CliApplication():
     def list_devices(self):
         print('listDevices')
         response = requests.get("http://localhost:5000/devices")
+        data = response.json()
+        print(data['message'])
 
     def firmware(self):
         print('firmware')
@@ -60,15 +62,21 @@ class CliApplication():
     def firmwalker(self, extracted_folder):
         print('firmwalker')
         response = requests.get("http://localhost:8000/firmwalker/" + extracted_folder + ".extracted")
+        data = response.json()
+        print(data['message'])
 
     def devices_services_and_ports(self):
         print('devicesServicesAndPorts')
         response = requests.get("http://localhost:5000/services")
+        data = response.json()
+        print(data['message'])
     
     def vulnerabilities(self):
         ip = answers['vulnerabilities']
         print('vulnerabilities')
         response = requests.get("http://localhost:5000/vulnerabilities/" + ip)
+        data = response.json()
+        print(data['message'])
 
 
 print("\n                audIoTVuln \n")

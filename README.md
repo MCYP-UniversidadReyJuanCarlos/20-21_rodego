@@ -24,7 +24,7 @@ To run the project execute the following commands from the main directory.
 ```
 docker-compose up -d web nmap firmware firmwalker
 
-docker-compose run cli
+docker-compose run --rm cli 
 ```
 
 ## Basic usage
@@ -36,5 +36,9 @@ Once the tool is running you can choose between one of the next options:
 - Analyze open ports and exposed services
 - List possible vulnerabilities.
 
+### Notes:
 
+You need to run the service cli each time you want to use the tool.
+
+This tool has been tested in a Linux environment, it should run on Windows and Mac but you could face some limitations with Docker on those OS.
 
