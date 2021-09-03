@@ -19,7 +19,7 @@ public class DeviceController {
 	@Autowired
 	private DeviceService deviceService;
 	
-	@GetMapping("/device")
+	@GetMapping("/devices")
     public ModelAndView displayArticle(Map<String, Object> model) {
         try {
 			model.put("devices", deviceService.getDevices());

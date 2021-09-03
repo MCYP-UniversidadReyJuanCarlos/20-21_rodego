@@ -19,7 +19,7 @@ public class ServiceController {
 	@Autowired
 	private ServiceService serviceService;
 	
-	@GetMapping("/service")
+	@GetMapping("/services")
     public ModelAndView displayArticle(Map<String, Object> model) {
         try {
 			model.put("services", serviceService.getServices());
