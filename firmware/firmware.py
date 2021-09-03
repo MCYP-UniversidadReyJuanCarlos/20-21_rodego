@@ -12,16 +12,7 @@ class Firmware(Resource):
         index = filename.rfind('.')
         final_name = filename[:index]
         os.system("binwalk -Mre --directory=/usr/src/app/data/ --log=/usr/src/app/data/" + final_name + ".log --csv " + "/usr/src/app/data/" + filename)
-        return jsonify({'message': 'OK'})
-
-def to_json(filename):
-    with open('data/firmwalker/' + filename + '.xml') as fd:
-        xpars = xmltodict.parse(fd.read())
-
-    json_file = json.dumps(xpars)
-    f = open('data/firmwalker/' + filename + ".json", "w")
-    f.write(json_file)
-    f.close()
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/firmware'})
 
 api.add_resource(Firmware, '/firmware/<string:filename>')
 

@@ -12,20 +12,20 @@ class ListDevices(Resource):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
-        return jsonify({'message': 'OK'})
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
 class PortsAndServices(Resource):
     def get(self):
         os.system("chmod +x services.sh")
         os.system("sudo ./services.sh")
         to_json('services')
-        return jsonify({'message': 'OK'})
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
 class Vulnerabilities(Resource):
     def get(self, ip):
         os.system("sudo nmap --script=vuln -p- " + ip + " -oX data/nmap/vulns.xml")
         to_json('vulns')
-        return jsonify({'message': 'OK'})
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/vulnerabilities'})
 
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
