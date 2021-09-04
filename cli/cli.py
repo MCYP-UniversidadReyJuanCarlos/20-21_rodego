@@ -53,7 +53,7 @@ class CliApplication():
         final_name = firmware_file[:index]
         print(final_name)
         self.binwalk(firmware_file)
-        self.firmwalker(final_name)
+        self.firmwalker(firmware_file)
 
     def binwalk(self, filename):
         print('binwalk')
