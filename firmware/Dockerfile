@@ -1,4 +1,3 @@
-#FROM kalilinux/kali
 FROM python:buster
 
 RUN apt-get update && apt-cache search kali-linux
@@ -17,11 +16,6 @@ RUN apt-get update -y; \
 
 RUN pip install flask flask-restful xmltodict
 
-# RUN git clone https://github.com/ReFirmLabs/binwalk.git /binwalk; \
-#  cd /binwalk; \
-#  python setup.py install; \
-#  ./deps.sh --yes
-
 RUN git clone https://github.com/ReFirmLabs/binwalk.git /binwalk; \
  cd /binwalk; \
  python3 setup.py install;
@@ -34,10 +28,6 @@ RUN ./deps.sh --yes
 RUN apt-get clean; \
  rm -rf /var/lib/apt/lists/*
 
-#WORKDIR /binwalk
 COPY . .
 
 ENTRYPOINT ["python3", "firmware.py"]
-
-#ENTRYPOINT ["/usr/local/bin/binwalk"]
-#CMD ["bash", "entrypoint.sh"]
