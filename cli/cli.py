@@ -13,7 +13,7 @@ from PyInquirer import Validator, ValidationError
 style = style_from_dict({
     Token.QuestionMark: '#E91E63 bold',
     Token.Selected: '#673AB7 bold',
-    Token.Instruction: '',  # default
+    Token.Instruction: '',
     Token.Answer: '#2196f3 bold',
     Token.Question: '',
 })
@@ -25,7 +25,7 @@ class NumberValidator(Validator):
         except ValueError:
             raise ValidationError(
                 message='Please enter a number',
-                cursor_position=len(document.text))  # Move cursor to end
+                cursor_position=len(document.text))
 
 class CliApplication():
     def main(self):       
@@ -104,7 +104,7 @@ questions = [
             },
             {
                 'key': 'vulnerabilities',
-                'name': 'List possbile vulnerbilities, you will be requested for the target ip',
+                'name': 'List possbile vulnerbilities',
                 'value': 'vulnerabilities'
             }
         ]
@@ -112,7 +112,7 @@ questions = [
     {
         'type': 'input',
         'name': 'filePath',
-        'message': 'Introduce the file name(including the extension) to analyze, should be within the folder "data/firmware',
+        'message': 'Introduce the file name to analyze (example: firmware.bin)',
         'filter': lambda val: str(val),
         'when': lambda answers: answers['actions'] == 'firmware'
     },
