@@ -5,13 +5,14 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
-api = Api(app)  
+api = Api(app)
 
 class ListDevices(Resource):
     def get(self):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
+        get_hosts('devices')
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
 class PortsAndServices(Resource):
@@ -27,6 +28,13 @@ class Vulnerabilities(Resource):
         to_json('vulns')
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/vulnerabilities'})
 
+class ListAndPorts(Resource):
+    def get(self):
+        os.system("chmod +x devices.sh")
+        os.system("sudo ./devices.sh")
+        to_json('devices')
+
+
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
         xpars = xmltodict.parse(fd.read())
@@ -36,10 +44,16 @@ def to_json(filename):
     f.write(json_file)
     f.close()
 
+def get_hosts():
+    f = open("data/nmap/devices.json", "r")
+    devices = json.loads(f.read())
+    print("devices")
+    print(devices["nmaprun"])
+
 api.add_resource(ListDevices, '/devices')
 api.add_resource(PortsAndServices, '/services')
 api.add_resource(Vulnerabilities, '/vulnerabilities/<string:ip>')
 
 if __name__ == '__main__':
-  
+
     app.run(debug = True)
