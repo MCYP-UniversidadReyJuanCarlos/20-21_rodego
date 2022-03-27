@@ -12,7 +12,7 @@ class ListDevices(Resource):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
-        get_hosts('devices')
+        get_hosts()
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
 class PortsAndServices(Resource):
@@ -48,7 +48,8 @@ def get_hosts():
     f = open("data/nmap/devices.json", "r")
     devices = json.loads(f.read())
     print("devices")
-    print(devices["nmaprun"])
+    print(devices["nmaprun"]["host"])
+    hosts = devices["nmaprun"]["host"]
 
 api.add_resource(ListDevices, '/devices')
 api.add_resource(PortsAndServices, '/services')
