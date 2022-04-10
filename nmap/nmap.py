@@ -109,7 +109,7 @@ def create_json(devices):
         json.dump(json_data, file)
 
 def create_json2(devices):
-    with open("./data/nmap/student.txt", "w") as file:
+    with open("./data/nmap/device.json", "w") as file:
         json.dump([ob.__dict__ for ob in devices], file)
 
 api.add_resource(ListDevices, '/devices')
