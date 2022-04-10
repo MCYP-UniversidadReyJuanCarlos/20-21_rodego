@@ -1,5 +1,7 @@
 import os
 import xmltodict, json
+import xml.etree.ElementTree as elementTree
+import logging
 
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
@@ -12,6 +14,8 @@ class ListDevices(Resource):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
+        devices = parse_file('devices')
+        create_json2(devices)
         get_hosts()
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
@@ -50,6 +54,63 @@ def get_hosts():
     print("devices")
     print(devices["nmaprun"]["host"])
     hosts = devices["nmaprun"]["host"]
+
+def parse_file(filename):
+    tree = elementTree.parse('data/nmap/' + filename + '.xml')
+    root = tree.getroot()
+
+    devices = []
+
+    for hosts in root.iter('host'):
+        ip = ""
+        mac = ""
+        vendor = ""
+        for address in hosts.iter('address'):
+            if "ipv4" in (address.attrib['addrtype']):
+                ip = (address.attrib['addr'])
+            if "mac" in (address.attrib['addrtype']):
+                mac = (address.attrib['addr'])
+                if "vendor" in address.attrib:
+                    vendor = (address.attrib['vendor'])
+            logging.error("find " + ip)
+            device = find_device(ip, devices)
+            if device is None:
+                logging.error("is none")
+                device = Device(ip, vendor, mac)
+                devices.append(device)
+            else:
+                logging.error("is found")
+                device.mac = mac
+                device.vendor = vendor
+
+    return devices
+
+def find_device(ip, devices):
+    aux = [x for x in devices if ip in x.ip]
+    if len(aux) == 1:
+        print("yes")
+        return aux[0]
+    else:
+        return None
+
+class Device:
+    def __init__(self, ip, name, mac):
+        self.ip = ip
+        self.name = name
+        self.mac = mac
+
+    def read_ip(self):
+       print("Device ip " + self.ip)
+
+def create_json(devices):
+    with open("./data/nmap/1_devices.json", "w") as file:
+        json_data = json.dumps(vars(devices))
+        #json.dump(devices, file)
+        json.dump(json_data, file)
+
+def create_json2(devices):
+    with open("./data/nmap/student.txt", "w") as file:
+        json.dump([ob.__dict__ for ob in devices], file)
 
 api.add_resource(ListDevices, '/devices')
 api.add_resource(PortsAndServices, '/services')
