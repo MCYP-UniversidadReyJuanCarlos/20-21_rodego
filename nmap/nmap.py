@@ -9,13 +9,23 @@ from flask_restful import Resource, Api
 app = Flask(__name__)
 api = Api(app)
 
+class Analysis(Resource):
+    def get(self):
+        os.system("chmod +x devices.sh")
+        os.system("sudo ./devices.sh")
+        #to_json('devices')
+        devices = parse_file('devices')
+        create_json(devices)
+        get_hosts()
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
+
 class ListDevices(Resource):
     def get(self):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
-        to_json('devices')
+        #to_json('devices')
         devices = parse_file('devices')
-        create_json2(devices)
+        create_json(devices)
         get_hosts()
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
@@ -28,8 +38,13 @@ class PortsAndServices(Resource):
 
 class Vulnerabilities(Resource):
     def get(self, ip):
-        os.system("sudo nmap --script=vuln -p- " + ip + " -oX data/nmap/vulns.xml")
-        to_json('vulns')
+
+        ips = get_ips()
+
+        for ip2 in ips:
+            os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
+            to_json(ip2 + '_vulns')
+
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/vulnerabilities'})
 
 class ListAndPorts(Resource):
@@ -37,7 +52,6 @@ class ListAndPorts(Resource):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
-
 
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
@@ -54,6 +68,16 @@ def get_hosts():
     print("devices")
     print(devices["nmaprun"]["host"])
     hosts = devices["nmaprun"]["host"]
+
+def get_ips():
+    jsonFile = open("data/nmap/device.json", "r")
+    devices = json.loads(jsonFile.read())
+    ips = []
+
+    for device in devices:
+        ips.append(device["ip"])
+
+    return ips
 
 def parse_file(filename):
     tree = elementTree.parse('data/nmap/' + filename + '.xml')
@@ -103,18 +127,13 @@ class Device:
        print("Device ip " + self.ip)
 
 def create_json(devices):
-    with open("./data/nmap/1_devices.json", "w") as file:
-        json_data = json.dumps(vars(devices))
-        #json.dump(devices, file)
-        json.dump(json_data, file)
-
-def create_json2(devices):
     with open("./data/nmap/device.json", "w") as file:
         json.dump([ob.__dict__ for ob in devices], file)
 
 api.add_resource(ListDevices, '/devices')
 api.add_resource(PortsAndServices, '/services')
 api.add_resource(Vulnerabilities, '/vulnerabilities/<string:ip>')
+api.add_resource(Analysis, '/analysis')
 
 if __name__ == '__main__':
 
