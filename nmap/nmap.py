@@ -16,8 +16,14 @@ class Analysis(Resource):
         #to_json('devices')
         devices = parse_file('devices')
         create_json(devices)
-        get_hosts()
-        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
+
+        ips = get_ips()
+
+        for ip in ips:
+            os.system("chmod +x services.sh")
+            os.system("sudo ./services.sh " + ip)
+
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
 class ListDevices(Resource):
     def get(self):
