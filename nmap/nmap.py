@@ -119,7 +119,9 @@ def parse_file(filename):
 def parse_ports_and_services_files():
     files_dir = Path('data/nmap/services')
     files = files_dir.glob('*.xml')
-
+    for file in files:
+        tree = elementTree.parse(file)
+        root = tree.getroot()
 
 
 def find_device(ip, devices):
