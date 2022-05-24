@@ -3,6 +3,7 @@ import xmltodict, json
 import xml.etree.ElementTree as elementTree
 import logging
 
+from pathlib import Path
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
@@ -38,7 +39,7 @@ class ListDevices(Resource):
 class PortsAndServices(Resource):
     def get(self):
         os.system("chmod +x services.sh")
-        os.system("sudo ./services.sh")
+        os.system("sudo ./services.sh 192.168.100.101")
         to_json('services')
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
@@ -114,6 +115,12 @@ def parse_file(filename):
                 device.vendor = vendor
 
     return devices
+
+def parse_ports_and_services_files():
+    files_dir = Path('data/nmap/services')
+    files = files_dir.glob('*.xml')
+
+
 
 def find_device(ip, devices):
     aux = [x for x in devices if ip in x.ip]
