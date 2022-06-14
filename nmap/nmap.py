@@ -146,7 +146,8 @@ def parse_ports_and_services_files():
                         reason = port.find('state').attrib['reason']
                         reason_ttl = port.find('state').attrib['reason_ttl']
                      if(port.find('service') is not None):
-
+                        service_name = port.find('service').attrib['name']
+                port_info = Port(port_number, protocol)
 
 
             return os_list
@@ -168,6 +169,17 @@ class Device:
 
     def read_ip(self):
        print("Device ip " + self.ip)
+
+class Port:
+    state = ''
+    reason = ''
+    reason_ttl = ''
+    service_name = ''
+
+    def __init__(self, port_number, protocol):
+        self.port_number = port_number
+        self.protocol = protocol
+
 
 def create_json(devices):
     with open("./data/nmap/device.json", "w") as file:
