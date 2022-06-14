@@ -20,8 +20,8 @@ class Analysis(Resource):
 
         ips = get_ips()
 
+        os.system("chmod +x services.sh")
         for ip in ips:
-            os.system("chmod +x services.sh")
             os.system("sudo ./services.sh " + ip)
 
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
@@ -122,6 +122,34 @@ def parse_ports_and_services_files():
     for file in files:
         tree = elementTree.parse(file)
         root = tree.getroot()
+        for host in root.findall('host'):
+            os = host.find('os')
+            if os is not None:
+                for match in os.findall("osmatch"):
+                    name = match.attrib['name']
+
+                for osclass in match.findall("osclass"):
+                    type=osclass.attrib['type']
+                    vendor=osclass.attrib['vendor']
+                    osfamily=osclass.attrib['osfamily']
+                    osgen=osclass.attrib['osgen']
+                    accuracy=osclass.attrib['accuracy']
+
+                os_list.append(attrib)
+
+            for ports in hosts.findall('ports'):
+                for port in ports:
+                    port_number = port.attrib['portid']
+                    protocol = port.attrib['protocol']
+                    if(port.find('state') is not None):
+                        state = port.find('state').attrib['state']
+                        reason = port.find('state').attrib['reason']
+                        reason_ttl = port.find('state').attrib['reason_ttl']
+                     if(port.find('service') is not None):
+
+
+
+            return os_list
 
 
 def find_device(ip, devices):
