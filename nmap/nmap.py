@@ -24,6 +24,9 @@ class Analysis(Resource):
         for ip in ips:
             os.system("sudo ./services.sh " + ip)
 
+        logging.error('parse_ports_and_services_files 1')
+        parse_ports_and_services_files(devices)
+
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
 class ListDevices(Resource):
@@ -113,17 +116,23 @@ def parse_file(filename):
                 logging.error("is found")
                 device.mac = mac
                 device.vendor = vendor
+            devices.append(device)
 
     return devices
 
-def parse_ports_and_services_files():
-    files_dir = Path('data/nmap/services')
-    files = files_dir.glob('*.xml')
+def parse_ports_and_services_files(devices):
+    logging.error('parse_ports_and_services_files')
+    files_dir = Path('data/nmap')
+    files = files_dir.glob('*_services.xml')
     for file in files:
+        ip = file.name.split("_")[0]
+        logging.error(ip)
         tree = elementTree.parse(file)
         root = tree.getroot()
         for host in root.findall('host'):
             os = host.find('os')
+            os_list = []
+            port_list = []
             if os is not None:
                 for match in os.findall("osmatch"):
                     name = match.attrib['name']
@@ -135,22 +144,31 @@ def parse_ports_and_services_files():
                     osgen=osclass.attrib['osgen']
                     accuracy=osclass.attrib['accuracy']
 
-                os_list.append(attrib)
+                os_list.append(OperativeSystem(type, vendor, osfamily, osgen, accuracy, name))
 
-            for ports in hosts.findall('ports'):
+            for ports in host.findall('port'):
                 for port in ports:
-                    port_number = port.attrib['portid']
-                    protocol = port.attrib['protocol']
-                    if(port.find('state') is not None):
-                        state = port.find('state').attrib['state']
-                        reason = port.find('state').attrib['reason']
-                        reason_ttl = port.find('state').attrib['reason_ttl']
-                     if(port.find('service') is not None):
-                        service_name = port.find('service').attrib['name']
-                port_info = Port(port_number, protocol)
+                    if port is not None:
+                        port_number = port.attrib['portid']
+                        protocol = port.attrib['protocol']
+                        if(port.find('state') is not None):
+                            state = port.find('state').attrib['state']
+                            reason = port.find('state').attrib['reason']
+                            reason_ttl = port.find('state').attrib['reason_ttl']
+                        if(port.find('service') is not None):
+                            service_name = port.find('service').attrib['name']
+                        port_info = Port(port_number, protocol)
+                        port_info.state = state
+                        port_info.reason = reason
+                        port_info.reason_ttl = reason_ttl
+                        port_info.service_name = service_name
+                        port_list.append(port_info)
+            device = find_device(ip, devices)
+            device.ports = port_list
+            device.os = os_list
 
-
-            return os_list
+            logging.error(devices[0].ports[0].state)
+            return devices
 
 
 def find_device(ip, devices):
@@ -162,6 +180,8 @@ def find_device(ip, devices):
         return None
 
 class Device:
+    ports = ''
+    os = ''
     def __init__(self, ip, name, mac):
         self.ip = ip
         self.name = name
@@ -180,6 +200,14 @@ class Port:
         self.port_number = port_number
         self.protocol = protocol
 
+class OperativeSystem:
+    def __init__(self, type, vendor, osfamily, osgen, accuracy, name):
+        self.type = type
+        self.vendor = vendor
+        self.osfamily = osfamily
+        self.osgen = osgen
+        self.accuracy = accuracy
+        self.name = name
 
 def create_json(devices):
     with open("./data/nmap/device.json", "w") as file:
