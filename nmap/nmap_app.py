@@ -1,7 +1,8 @@
-import os
+import os, subprocess
 import xmltodict, json
 import xml.etree.ElementTree as elementTree
 import logging
+import nmap
 
 from pathlib import Path
 from flask import Flask, jsonify, request
@@ -14,18 +15,25 @@ class Analysis(Resource):
     def get(self):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
+
+        ip = subprocess.getoutput('echo $(cat data/ip.log | grep -o -m 1 "[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+" | head -1)')
+        logging.error('ip2' + ip)
+
+        scanner = nmap.PortScanner()
+        scanner.scan(ip + '/24')
+        logging.error(scanner.all_hosts())
         #to_json('devices')
-        devices = parse_file('devices')
-        create_json(devices)
-
-        ips = get_ips()
-
-        os.system("chmod +x services.sh")
-        for ip in ips:
-            os.system("sudo ./services.sh " + ip)
-
-        logging.error('parse_ports_and_services_files 1')
-        parse_ports_and_services_files(devices)
+        # devices = parse_file('devices')
+        # create_json(devices)
+        #
+        # ips = get_ips()
+        #
+        # os.system("chmod +x services.sh")
+        # for ip in ips:
+        #     os.system("sudo ./services.sh " + ip)
+        #
+        # logging.error('parse_ports_and_services_files 1')
+        # parse_ports_and_services_files(devices)
 
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
@@ -108,15 +116,18 @@ def parse_file(filename):
                     vendor = (address.attrib['vendor'])
             logging.error("find " + ip)
             device = find_device(ip, devices)
+
             if device is None:
                 logging.error("is none")
                 device = Device(ip, vendor, mac)
                 devices.append(device)
             else:
+                index = devices.index(device.ip)
+                logging.error(index)
                 logging.error("is found")
                 device.mac = mac
                 device.vendor = vendor
-            devices.append(device)
+                devices[index] = device
 
     return devices
 
@@ -168,12 +179,13 @@ def parse_ports_and_services_files(devices):
             device.os = os_list
 
             logging.error(devices[0].ports[0].state)
-            return devices
+
+    return devices
 
 
 def find_device(ip, devices):
     aux = [x for x in devices if ip in x.ip]
-    if len(aux) == 1:
+    if len(aux) > 0:
         print("yes")
         return aux[0]
     else:
