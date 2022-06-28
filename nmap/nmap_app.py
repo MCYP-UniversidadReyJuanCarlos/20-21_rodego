@@ -17,23 +17,13 @@ class Analysis(Resource):
         os.system("sudo ./devices.sh")
 
         ip = subprocess.getoutput('echo $(cat data/ip.log | grep -o -m 1 "[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+" | head -1)')
-        logging.error('ip2' + ip)
 
         scanner = nmap.PortScanner()
-        scanner.scan(ip + '/24')
+        result = scanner.scan(ip + '/24')
         logging.error(scanner.all_hosts())
-        #to_json('devices')
-        # devices = parse_file('devices')
-        # create_json(devices)
-        #
-        # ips = get_ips()
-        #
-        # os.system("chmod +x services.sh")
-        # for ip in ips:
-        #     os.system("sudo ./services.sh " + ip)
-        #
-        # logging.error('parse_ports_and_services_files 1')
-        # parse_ports_and_services_files(devices)
+
+        with open('data/nmap/result.json', 'w') as fp:
+            json.dump(result, fp)
 
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
@@ -41,9 +31,7 @@ class ListDevices(Resource):
     def get(self):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
-        #to_json('devices')
-        devices = parse_file('devices')
-        create_json(devices)
+
         get_hosts()
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
 
@@ -96,91 +84,6 @@ def get_ips():
         ips.append(device["ip"])
 
     return ips
-
-def parse_file(filename):
-    tree = elementTree.parse('data/nmap/' + filename + '.xml')
-    root = tree.getroot()
-
-    devices = []
-
-    for hosts in root.iter('host'):
-        ip = ""
-        mac = ""
-        vendor = ""
-        for address in hosts.iter('address'):
-            if "ipv4" in (address.attrib['addrtype']):
-                ip = (address.attrib['addr'])
-            if "mac" in (address.attrib['addrtype']):
-                mac = (address.attrib['addr'])
-                if "vendor" in address.attrib:
-                    vendor = (address.attrib['vendor'])
-            logging.error("find " + ip)
-            device = find_device(ip, devices)
-
-            if device is None:
-                logging.error("is none")
-                device = Device(ip, vendor, mac)
-                devices.append(device)
-            else:
-                index = devices.index(device.ip)
-                logging.error(index)
-                logging.error("is found")
-                device.mac = mac
-                device.vendor = vendor
-                devices[index] = device
-
-    return devices
-
-def parse_ports_and_services_files(devices):
-    logging.error('parse_ports_and_services_files')
-    files_dir = Path('data/nmap')
-    files = files_dir.glob('*_services.xml')
-    for file in files:
-        ip = file.name.split("_")[0]
-        logging.error(ip)
-        tree = elementTree.parse(file)
-        root = tree.getroot()
-        for host in root.findall('host'):
-            os = host.find('os')
-            os_list = []
-            port_list = []
-            if os is not None:
-                for match in os.findall("osmatch"):
-                    name = match.attrib['name']
-
-                for osclass in match.findall("osclass"):
-                    type=osclass.attrib['type']
-                    vendor=osclass.attrib['vendor']
-                    osfamily=osclass.attrib['osfamily']
-                    osgen=osclass.attrib['osgen']
-                    accuracy=osclass.attrib['accuracy']
-
-                os_list.append(OperativeSystem(type, vendor, osfamily, osgen, accuracy, name))
-
-            for ports in host.findall('port'):
-                for port in ports:
-                    if port is not None:
-                        port_number = port.attrib['portid']
-                        protocol = port.attrib['protocol']
-                        if(port.find('state') is not None):
-                            state = port.find('state').attrib['state']
-                            reason = port.find('state').attrib['reason']
-                            reason_ttl = port.find('state').attrib['reason_ttl']
-                        if(port.find('service') is not None):
-                            service_name = port.find('service').attrib['name']
-                        port_info = Port(port_number, protocol)
-                        port_info.state = state
-                        port_info.reason = reason
-                        port_info.reason_ttl = reason_ttl
-                        port_info.service_name = service_name
-                        port_list.append(port_info)
-            device = find_device(ip, devices)
-            device.ports = port_list
-            device.os = os_list
-
-            logging.error(devices[0].ports[0].state)
-
-    return devices
 
 
 def find_device(ip, devices):
