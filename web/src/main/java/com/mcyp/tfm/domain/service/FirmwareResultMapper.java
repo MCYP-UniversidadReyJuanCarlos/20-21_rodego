@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mcyp.tfm.domain.model.nmap.NmapResult;
+import com.mcyp.tfm.domain.model.nmap.scan.NmapResult;
 
 import lombok.extern.slf4j.Slf4j;
 

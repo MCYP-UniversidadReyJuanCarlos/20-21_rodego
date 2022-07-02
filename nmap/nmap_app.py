@@ -18,9 +18,14 @@ class Analysis(Resource):
 
         ip = subprocess.getoutput('echo $(cat data/ip.log | grep -o -m 1 "[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+" | head -1)')
 
+        logging.error('ip' + ip)
         scanner = nmap.PortScanner()
-        result = scanner.scan(ip + '/24')
-        logging.error(scanner.all_hosts())
+        result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
+        hosts = scanner.all_hosts()
+        logging.error(hosts)
+        for host in hosts:
+            if(has_https(scanner[host])):
+                logging.error('has https')
 
         with open('data/nmap/result.json', 'w') as fp:
             json.dump(result, fp)
@@ -58,6 +63,14 @@ class ListAndPorts(Resource):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
         to_json('devices')
+
+def has_https(host):
+    for port_number in host.get('tcp').keys():
+        if https in host.get('tcp')[port_number].get('name'):
+            return True
+        return False
+
+ #if 'https' in scanner['192.168.102.1'].get('tcp').get(443).get('name'):
 
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
