@@ -65,6 +65,8 @@ class ListAndPorts(Resource):
         to_json('devices')
 
 def has_https(host):
+    if host.get('tcp') is None:
+        return false
     for port_number in host.get('tcp').keys():
         if https in host.get('tcp')[port_number].get('name'):
             return True
