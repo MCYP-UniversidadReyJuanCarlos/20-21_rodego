@@ -21,17 +21,20 @@ class Analysis(Resource):
         logging.error('ip' + ip)
         scanner = nmap.PortScanner()
         #result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
-        result = scanner.scan('192.168.2.105', arguments='-n -Pn -v -sV --privileged')
+        result = scanner.scan('192.168.100.105', arguments='-n -Pn -v -sV --privileged')
 
         hosts = scanner.all_hosts()
         logging.error(hosts)
         for host in hosts:
-            if(get_https_port(scanner[host])is not None):
+            https_port = get_https_port(scanner[host])
+            http_port = get_http_port(scanner[host])
+            ssh_port = get_ssh_port(scanner[host])
+            if(https_port is not None):
                 process_https()
-            if(get_http_port(scanner[host])is not None):
-                process_https()
-            if(get_ssh_port(scanner[host]) is not None):
-                process_ssh()
+            if(http_port is not None):
+                process_http()
+            if(ssh_port is not None):
+                process_ssh(host, ssh_port)
 
         with open('data/nmap/result.json', 'w') as fp:
             json.dump(result, fp)
@@ -42,8 +45,9 @@ class Analysis(Resource):
 def process_https():
     logging.error('process https')
 
-def process_ssh():
+def process_ssh(ip, port):
     logging.error('process ssh')
+    os.system("ssh-audit -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".json")
 
 def process_http():
     logging.error('process http')
@@ -53,7 +57,7 @@ def get_https_port(host):
         return None
     for port_number in host.get('tcp').keys():
         logging.error(port_number)
-        if 'https' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+        if 'https' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
             return port_number
     return None
 
@@ -61,7 +65,7 @@ def get_ssh_port(host):
     if host.get('tcp') is None:
         return None
     for port_number in host.get('tcp').keys():
-        if 'ssh' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+        if 'ssh' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
             return port_number
         return None
 
@@ -70,7 +74,7 @@ def get_http_port(host):
         return None
     for port_number in host.get('tcp').keys():
         logging.error(port_number)
-        if 'http' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+        if 'http' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
             return port_number
     return None
 
