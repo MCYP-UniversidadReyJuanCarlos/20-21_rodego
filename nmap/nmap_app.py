@@ -20,59 +20,59 @@ class Analysis(Resource):
 
         logging.error('ip' + ip)
         scanner = nmap.PortScanner()
-        result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
+        #result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
+        result = scanner.scan('192.168.2.105', arguments='-n -Pn -v -sV --privileged')
+
         hosts = scanner.all_hosts()
         logging.error(hosts)
         for host in hosts:
-            if(has_https(scanner[host])):
-                logging.error('has https')
+            if(get_https_port(scanner[host])is not None):
+                process_https()
+            if(get_http_port(scanner[host])is not None):
+                process_https()
+            if(get_ssh_port(scanner[host]) is not None):
+                process_ssh()
 
         with open('data/nmap/result.json', 'w') as fp:
             json.dump(result, fp)
 
+        #os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
-class ListDevices(Resource):
-    def get(self):
-        os.system("chmod +x devices.sh")
-        os.system("sudo ./devices.sh")
+def process_https():
+    logging.error('process https')
 
-        get_hosts()
-        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/devices'})
+def process_ssh():
+    logging.error('process ssh')
 
-class PortsAndServices(Resource):
-    def get(self):
-        os.system("chmod +x services.sh")
-        os.system("sudo ./services.sh 192.168.100.101")
-        to_json('services')
-        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
+def process_http():
+    logging.error('process http')
 
-class Vulnerabilities(Resource):
-    def get(self, ip):
-
-        ips = get_ips()
-
-        for ip2 in ips:
-            os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
-            to_json(ip2 + '_vulns')
-
-        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/vulnerabilities'})
-
-class ListAndPorts(Resource):
-    def get(self):
-        os.system("chmod +x devices.sh")
-        os.system("sudo ./devices.sh")
-        to_json('devices')
-
-def has_https(host):
+def get_https_port(host):
     if host.get('tcp') is None:
-        return false
+        return None
     for port_number in host.get('tcp').keys():
-        if https in host.get('tcp')[port_number].get('name'):
-            return True
-        return False
+        logging.error(port_number)
+        if 'https' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+    return None
 
- #if 'https' in scanner['192.168.102.1'].get('tcp').get(443).get('name'):
+def get_ssh_port(host):
+    if host.get('tcp') is None:
+        return None
+    for port_number in host.get('tcp').keys():
+        if 'ssh' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+        return None
+
+def get_http_port(host):
+    if host.get('tcp') is None:
+        return None
+    for port_number in host.get('tcp').keys():
+        logging.error(port_number)
+        if 'http' in host.get('tcp')[port_number].get('name') && 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+    return None
 
 def to_json(filename):
     with open('data/nmap/' + filename + '.xml') as fd:
@@ -143,9 +143,6 @@ def create_json(devices):
     with open("./data/nmap/device.json", "w") as file:
         json.dump([ob.__dict__ for ob in devices], file)
 
-api.add_resource(ListDevices, '/devices')
-api.add_resource(PortsAndServices, '/services')
-api.add_resource(Vulnerabilities, '/vulnerabilities/<string:ip>')
 api.add_resource(Analysis, '/analysis')
 
 if __name__ == '__main__':
