@@ -44,10 +44,11 @@ class Analysis(Resource):
 
 def process_https():
     logging.error('process https')
+    #docker run --rm -t -v $(pwd)/data:/data drwetter/testssl.sh --jsonfile /data/ 192.168.102.1
 
 def process_ssh(ip, port):
     logging.error('process ssh')
-    os.system("ssh-audit -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".json")
+    os.system("ssh-audit --j -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".txt")
 
 def process_http():
     logging.error('process http')
