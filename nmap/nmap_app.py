@@ -3,6 +3,7 @@ import xmltodict, json
 import xml.etree.ElementTree as elementTree
 import logging
 import nmap
+import requests
 
 from pathlib import Path
 from flask import Flask, jsonify, request
@@ -30,7 +31,7 @@ class Analysis(Resource):
             http_port = get_http_port(scanner[host])
             ssh_port = get_ssh_port(scanner[host])
             if(https_port is not None):
-                process_https()
+                process_https(host, https_port)
             if(http_port is not None):
                 process_http()
             if(ssh_port is not None):
@@ -42,9 +43,9 @@ class Analysis(Resource):
         #os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
-def process_https():
+def process_https(host, https_port):
     logging.error('process https')
-    #docker run --rm -t -v $(pwd)/data:/data drwetter/testssl.sh --jsonfile /data/ 192.168.102.1
+    requests.get('http://localhost:5002/ssl/' + host)
 
 def process_ssh(ip, port):
     logging.error('process ssh')
@@ -59,6 +60,10 @@ def get_https_port(host):
     for port_number in host.get('tcp').keys():
         logging.error(port_number)
         if 'https' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+        elif 'tls' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+        elif 'ssl' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
             return port_number
     return None
 
@@ -76,6 +81,8 @@ def get_http_port(host):
     for port_number in host.get('tcp').keys():
         logging.error(port_number)
         if 'http' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
+            return port_number
+        if 'https' in host.get('tcp')[port_number].get('name') and 'open' in host.get('tcp')[port_number].get('state'):
             return port_number
     return None
 
@@ -104,7 +111,6 @@ def get_ips():
         ips.append(device["ip"])
 
     return ips
-
 
 def find_device(ip, devices):
     aux = [x for x in devices if ip in x.ip]

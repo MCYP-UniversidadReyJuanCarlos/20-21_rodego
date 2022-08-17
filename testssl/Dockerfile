@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM python:3-alpine
 
 WORKDIR /home/testssl
 
@@ -15,6 +15,9 @@ RUN test -n "${BUILD_VERSION}" \
     && ln -s /home/testssl/testssl.sh /usr/local/bin/ \
     && mkdir -m 755 -p /home/testssl/etc /home/testssl/bin
 
+RUN pip install flask flask-restful
+
 USER testssl
+COPY . .
 
 ENTRYPOINT ["python3", "ssl.py"]

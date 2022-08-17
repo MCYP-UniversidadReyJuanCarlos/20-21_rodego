@@ -51,4 +51,18 @@ services:
     image: traffic
     volumes:
       - ./data:/usr/src/app/data
-    network_mode: host      
+    network_mode: host
+  directories:
+    container_name: directories
+    build: ./directories/
+    image: directories
+    volumes:
+      - ./data/dir:/usr/src/app/data
+    network_mode: host
+  testssl:
+    container_name: testssl
+    build: ./testssl/
+    image: testssl
+    volumes:
+      - ./data:/home/testssl/data
+    network_mode: host
