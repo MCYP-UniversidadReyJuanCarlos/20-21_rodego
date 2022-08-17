@@ -33,7 +33,7 @@ class Analysis(Resource):
             if(https_port is not None):
                 process_https(host, https_port)
             if(http_port is not None):
-                process_http()
+                process_http(host)
             if(ssh_port is not None):
                 process_ssh(host, ssh_port)
 
@@ -51,8 +51,9 @@ def process_ssh(ip, port):
     logging.error('process ssh')
     os.system("ssh-audit --j -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".txt")
 
-def process_http():
+def process_http(host):
     logging.error('process http')
+    requests.get('http://localhost:5001/directories/' + host)
 
 def get_https_port(host):
     if host.get('tcp') is None:
