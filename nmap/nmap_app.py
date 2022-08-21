@@ -21,8 +21,8 @@ class Analysis(Resource):
 
         logging.error('ip' + ip)
         scanner = nmap.PortScanner()
-        #result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
-        result = scanner.scan('192.168.100.105', arguments='-n -Pn -v -sV --privileged')
+        result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
+        #result = scanner.scan('192.168.100.105', arguments='-n -Pn -v -sV --privileged')
 
         hosts = scanner.all_hosts()
         logging.error(hosts)

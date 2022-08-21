@@ -3,9 +3,7 @@ package com.mcyp.tfm.domain.model.nmap.scan;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Generated;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,50 +13,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "command_line",
-    "scaninfo",
-    "scanstats"
+    "state",
+    "reason"
 })
 @Generated("jsonschema2pojo")
-public class Nmap {
+public class Status {
 
-    @JsonProperty("command_line")
-    private String commandLine;
-    @JsonProperty("scaninfo")
-    private Scaninfo scaninfo;
-    @JsonProperty("scanstats")
-    private Scanstats scanstats;
+    @JsonProperty("state")
+    private String state;
+    @JsonProperty("reason")
+    private String reason;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("command_line")
-    public String getCommandLine() {
-        return commandLine;
+    @JsonProperty("state")
+    public String getState() {
+        return state;
     }
 
-    @JsonProperty("command_line")
-    public void setCommandLine(String commandLine) {
-        this.commandLine = commandLine;
+    @JsonProperty("state")
+    public void setState(String state) {
+        this.state = state;
     }
 
-    @JsonProperty("scaninfo")
-    public Scaninfo getScaninfo() {
-        return scaninfo;
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
     }
 
-    @JsonProperty("scaninfo")
-    public void setScaninfo(Scaninfo scaninfo) {
-        this.scaninfo = scaninfo;
-    }
-
-    @JsonProperty("scanstats")
-    public Scanstats getScanstats() {
-        return scanstats;
-    }
-
-    @JsonProperty("scanstats")
-    public void setScanstats(Scanstats scanstats) {
-        this.scanstats = scanstats;
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @JsonAnyGetter

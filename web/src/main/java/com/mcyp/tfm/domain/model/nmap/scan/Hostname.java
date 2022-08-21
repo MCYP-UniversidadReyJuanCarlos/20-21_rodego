@@ -3,9 +3,7 @@ package com.mcyp.tfm.domain.model.nmap.scan;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Generated;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,50 +13,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "command_line",
-    "scaninfo",
-    "scanstats"
+    "name",
+    "type"
 })
 @Generated("jsonschema2pojo")
-public class Nmap {
+public class Hostname {
 
-    @JsonProperty("command_line")
-    private String commandLine;
-    @JsonProperty("scaninfo")
-    private Scaninfo scaninfo;
-    @JsonProperty("scanstats")
-    private Scanstats scanstats;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("command_line")
-    public String getCommandLine() {
-        return commandLine;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("command_line")
-    public void setCommandLine(String commandLine) {
-        this.commandLine = commandLine;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("scaninfo")
-    public Scaninfo getScaninfo() {
-        return scaninfo;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("scaninfo")
-    public void setScaninfo(Scaninfo scaninfo) {
-        this.scaninfo = scaninfo;
-    }
-
-    @JsonProperty("scanstats")
-    public Scanstats getScanstats() {
-        return scanstats;
-    }
-
-    @JsonProperty("scanstats")
-    public void setScanstats(Scanstats scanstats) {
-        this.scanstats = scanstats;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter
