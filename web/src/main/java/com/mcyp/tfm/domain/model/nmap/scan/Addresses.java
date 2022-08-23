@@ -35,7 +35,17 @@ public class Addresses {
         this.ipv4 = ipv4;
     }
 
-    @JsonAnyGetter
+    @JsonProperty("mac")
+    public String getMac() {
+		return mac;
+	}
+
+    @JsonProperty("mac")
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	@JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
