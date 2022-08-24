@@ -18,7 +18,7 @@ public class WebController {
 	
 	@GetMapping("/home")
     public ModelAndView index(Map<String, Object> model) throws MapperException {     
-		mapper.map("result.json");
+		model.put("hosts", this.mapper.map("result_.json"));
         return new ModelAndView("home", model);
     }
 	

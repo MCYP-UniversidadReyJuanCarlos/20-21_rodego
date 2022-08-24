@@ -7,5 +7,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class VendorResult {
 
-	String name;
+	String name = "";
 }

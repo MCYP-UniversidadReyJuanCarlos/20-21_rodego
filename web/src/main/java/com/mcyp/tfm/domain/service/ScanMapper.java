@@ -20,6 +20,7 @@ import com.mcyp.tfm.domain.model.nmap.scan.response.AddressesResult;
 import com.mcyp.tfm.domain.model.nmap.scan.response.HostResult;
 import com.mcyp.tfm.domain.model.nmap.scan.response.StatusResult;
 import com.mcyp.tfm.domain.model.nmap.scan.response.TcpResult;
+import com.mcyp.tfm.domain.model.nmap.scan.response.VendorResult;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,9 +63,10 @@ public class ScanMapper {
 		return new HostResult()
 			.setTcp(tcps)
 			.setAddresses(new AddressesResult().setIpv4(host.getAddresses().getIpv4()).setMac(host.getAddresses().getMac()))
-			.setHostnames(null)
 			.setStatus(new StatusResult().setReason(host.getStatus().getReason()).setState(host.getStatus().getState()))
-			.setVendor(null);
+			.setVendor(new VendorResult().setName(host.getVendor().getAdditionalProperties().entrySet()
+				.stream().map(e -> e.getValue().toString()).findFirst().orElse(null))
+			);
 	}
 	
 	private TcpResult mapTcp(ObjectMapper mapper, String port, Object tcp) {
