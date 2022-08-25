@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,18 +49,19 @@ public class ScanMapper {
 			log.error(e.getMessage());
 			throw new MapperException("Cannot map or read file", e);
 		}
-		return hosts;
+		return hosts.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
 	}
 	
 	private HostResult map(ObjectMapper mapper, Host host) {
 		List<TcpResult> tcps = new ArrayList<TcpResult>();
-		
-		host.getTcp().getAdditionalProperties().entrySet().stream()
-			.forEach(e -> {
-				tcps.add(this.mapTcp(mapper, e.getKey(), e.getValue()));
-			}
-		);
+		if(Objects.nonNull(host.getTcp())) {
+			host.getTcp().getAdditionalProperties().entrySet().stream()
+				.forEach(e -> {
+					tcps.add(this.mapTcp(mapper, e.getKey(), e.getValue()));
+				}
+			);
+		}
 		
 		return new HostResult()
 			.setTcp(tcps)
@@ -74,8 +77,10 @@ public class ScanMapper {
 		try {
 			return mapper.treeToValue(node, TcpResult.class).setPort(port);
 		} catch (JsonProcessingException e) {
+			log.error("Cannot map tcp", e);
 			return null;
 		} catch (IllegalArgumentException e) {
+			log.error("Cannot map tcp", e);
 			return null;
 		}
 	}
