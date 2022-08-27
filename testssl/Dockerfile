@@ -13,11 +13,12 @@ RUN test -n "${BUILD_VERSION}" \
     && addgroup testssl \
     && adduser -G testssl -g "testssl user" -s /bin/bash -D testssl \
     && ln -s /home/testssl/testssl.sh /usr/local/bin/ \
-    && mkdir -m 755 -p /home/testssl/etc /home/testssl/bin
+    && mkdir -m 777 -p /home/testssl/etc /home/testssl/bin /home/testssl/data
 
 RUN pip install flask flask-restful
 
 USER testssl
+
 COPY . .
 
 ENTRYPOINT ["python3", "ssl.py"]

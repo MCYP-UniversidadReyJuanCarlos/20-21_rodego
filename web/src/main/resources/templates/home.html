@@ -35,15 +35,20 @@
 				<a href="#" data-bs-toggle="list" class="list-group-item list-group-item-action"
 						aria-current="true">
 					{{#addresses.ipv4}}
-					{{addresses.ipv4}}
+						{{addresses.ipv4}}
 					{{/addresses.ipv4}}
-					{{#addresses.mac}}
+						{{#addresses.mac}}
 				    {{addresses.mac}}
 				    {{/addresses.mac}}
 				    {{#vendor.name}}
-				    {{vendor.name}}
-				    {{/vendor.name}}</a> 
+				    	{{vendor.name}}
+				    {{/vendor.name}}
+				</a> 
 				{{/hosts}}
+				</div>
+				<!-- Vertically centered scrollable modal -->
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				  ...
 				</div>
 			</div>
 			<div class="tab-pane fade col-lg-6 mx-auto" id="firmware-tab-pane"

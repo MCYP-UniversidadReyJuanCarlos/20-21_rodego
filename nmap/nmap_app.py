@@ -16,6 +16,7 @@ class Analysis(Resource):
     def get(self):
         os.system("chmod +x devices.sh")
         os.system("sudo ./devices.sh")
+        os.system("rm data/nmap/result.json")
 
         ip = subprocess.getoutput('echo $(cat data/ip.log | grep -o -m 1 "[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+" | head -1)')
 
@@ -41,18 +42,15 @@ class Analysis(Resource):
             json.dump(result, fp)
 
         #os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
-        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
+        return jsonify({'message': 'In order to show the results go to: http://localhost:9090/home'})
 
 def process_https(host, https_port):
-    logging.error('process https')
     requests.get('http://localhost:5002/ssl/' + host)
 
 def process_ssh(ip, port):
-    logging.error('process ssh')
-    os.system("ssh-audit --j -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".txt")
+    os.system("ssh-audit --j -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit/ssh_audit_" + ip + ".txt")
 
 def process_http(host):
-    logging.error('process http')
     requests.get('http://localhost:5001/directories/' + host)
 
 def get_https_port(host):

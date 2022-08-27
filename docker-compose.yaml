@@ -44,25 +44,18 @@ services:
       - ./data:/data
     environment:
       TFM_DATA: ${TFM_DATA:-/data}
-  traffic:
-    container_name: traffic
-    privileged: true
-    build: ./traffic/
-    image: traffic
-    volumes:
-      - ./data:/usr/src/app/data
-    network_mode: host
   directories:
     container_name: directories
     build: ./directories/
     image: directories
     volumes:
-      - ./data/dir:/usr/src/app/data
+      - ./data/directories:/usr/src/app/data
     network_mode: host
   testssl:
     container_name: testssl
     build: ./testssl/
     image: testssl
+    user: 'root'
     volumes:
-      - ./data:/home/testssl/data
+      - ./data/testssl:/home/testssl/data:rw
     network_mode: host
