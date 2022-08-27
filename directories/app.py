@@ -8,7 +8,7 @@ api = Api(app)
 
 class Directories(Resource):
     def get(self, ip):
-        os.system("rm data/" + ip "".json")
+        os.system("rm data/" + ip  + ".json")
         os.system("python3 dirsearch/dirsearch.py -u " + ip + " -e html,php,txt,log,sql,csv,jpg,png,js,css,zip,json,conf -w seclists/Discovery/Web-Content/common.txt -r -f -x 400-499,500 --format json -o data/" + ip + ".json")
 
 api.add_resource(Directories, '/directories/<string:ip>')
