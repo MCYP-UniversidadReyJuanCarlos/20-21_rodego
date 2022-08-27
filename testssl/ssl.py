@@ -9,8 +9,7 @@ api = Api(app)
 class Ssl(Resource):
     def get(self, ip):
         os.system("rm data/" + ip + ".json")
-        os.system("./testssl.sh --jsonfile-pretty /tmp " + ip)
-        os.system("mv " + ip + ".json /home/testssl/data")
+        os.system("./testssl.sh --jsonfile-pretty /home/testssl/data/" + ip + ".json " + ip)
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/services'})
 
 api.add_resource(Ssl, '/ssl/<string:ip>')

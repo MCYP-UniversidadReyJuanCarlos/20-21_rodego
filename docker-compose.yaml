@@ -55,6 +55,7 @@ services:
     container_name: testssl
     build: ./testssl/
     image: testssl
+    user: 'root'
     volumes:
       - ./data/testssl:/home/testssl/data:rw
     network_mode: host
