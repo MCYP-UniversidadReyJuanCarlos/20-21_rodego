@@ -48,7 +48,7 @@ def process_https(host, https_port):
     requests.get('http://localhost:5002/ssl/' + host)
 
 def process_ssh(ip, port):
-    os.system("ssh-audit --j -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit/ssh_audit_" + ip + ".txt")
+    os.system("ssh-audit -n -v " + ip + " -p " + str(port) + " > data/nmap/ssh_audit_" + ip + ".txt")
 
 def process_http(host):
     requests.get('http://localhost:5001/directories/' + host)
