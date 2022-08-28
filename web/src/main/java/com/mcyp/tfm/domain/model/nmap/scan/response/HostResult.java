@@ -24,5 +24,9 @@ public class HostResult {
 	private Ssl ssl;
 	private Dirsearch directories;
 	private Ssh ssh;
+	
+	public boolean hasProtocol(String protocol) {
+		return this.getTcp().stream().filter(h -> protocol.equals(h.getName())).findAny().isPresent();
+	}
 }
 	
