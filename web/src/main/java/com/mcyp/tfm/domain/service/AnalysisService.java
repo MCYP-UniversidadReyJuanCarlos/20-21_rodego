@@ -46,6 +46,7 @@ public class AnalysisService {
 			if(host.hasProtocol("ssl") || host.hasProtocol("tls") || host.hasProtocol("https")) {
 				host.setSsl(this.sslMapper.map(host.getAddresses().getIpv4() + ".json"));
 			}
+			
 			return host;
 		}
 		
