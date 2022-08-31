@@ -22,6 +22,8 @@
 					data-bs-target="#doc-tab-pane" type="button" role="tab"
 					aria-controls="doc-tab-pane" aria-selected="false">Documentation</button>
 			</li>
+			<li class="nav-item"><a class="nav-link" href="/firmware">Link</a>
+			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active col-lg-6 mx-auto"
@@ -30,18 +32,18 @@
 				<p class="lead mb-4">List of devices found within your network</p>
 				<div class="list-group">
 				{{#hosts}}
-				<a href="#staticBackdrop" class="list-group-item list-group-item-action"
-						aria-current="true" data-bs-toggle="modal">
+				<a href="host/{{addresses.ipv4}}" class="list-group-item list-group-item-action py-3"
+						aria-current="true" id="submit">
 					{{#addresses.ipv4}}
 						{{addresses.ipv4}}
 					{{/addresses.ipv4}}
 						{{#addresses.mac}}
-				    {{addresses.mac}}
+				    	{{addresses.mac}}
 				    {{/addresses.mac}}
 				    {{#vendor.name}}
 				    	{{vendor.name}}
 				    {{/vendor.name}}
-				</a> 
+				</a>   
 				{{/hosts}}
 				</div>
 			</div>
@@ -64,57 +66,10 @@
 			<div class="tab-pane fade col-lg-6 mx-auto" id="doc-tab-pane"
 				role="tabpanel" aria-labelledby="doc-tab" tabindex="0">
 				<p class="lead mb-4">TODO Link to github or copy Readme</p>
-			</div>
+			</div>	
+			
 		</div>
+    
 	</div>
-	
-	<!-- Modal -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-	  <div class="modal-content">
-	    <div class="modal-header">
-	      <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-	      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    </div>
-	    <div class="modal-body">
-	      <ul class="nav nav-tabs justify-content-center" id="myTab"
-			role="tablist">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="services-tab"
-					data-bs-toggle="tab" data-bs-target="#services-tab-pane"
-					type="button" role="tab" aria-controls="services-tab-pane"
-					aria-selected="true">Services and ports</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="ssh-tab" data-bs-toggle="tab"
-					data-bs-target="#ssh-tab-pane" type="button" role="tab"
-					aria-controls="ssh-tab-pane" aria-selected="false">SSH Analysis</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="ssl-tab" data-bs-toggle="tab"
-					data-bs-target="#ssl-tab-pane" type="button" role="tab"
-					aria-controls="ssl-tab-pane" aria-selected="false">SSL Analysis</button>
-			</li>
-			<li class="nav-item">
-			<button class="nav-link" id="fuzzing-tab" data-bs-toggle="tab"
-					data-bs-target="#fuzzing-tab-pane" type="button" role="tab"
-					aria-controls="fuzzing-tab-pane" aria-selected="false">Fuzzing directories</button>
-			</li>
-		</ul>
-		<div class="tab-content" id="nav-tabContent">
-  			<div class="tab-pane fade show active" id="services-tab-pane" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">H...</div>
-			<div class="tab-pane fade" id="ssl-tab-pane" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">.p..</div>
-			<div class="tab-pane fade" id="ssh-tab-pane" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">..c.</div>
-  			<div class="tab-pane fade" id="fuzzing-tab-pane" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">.d..</div>
-  		</div>
-	    </div>
-	    <div class="modal-footer">
-	      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	    </div>
-	  </div>
-	</div>
-	
-	</div>
-	
 </body>
 {{>layout/footer}}
