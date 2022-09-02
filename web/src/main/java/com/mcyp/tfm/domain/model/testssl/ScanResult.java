@@ -4,7 +4,9 @@ package com.mcyp.tfm.domain.model.testssl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,7 +51,7 @@ public class ScanResult {
     @JsonProperty("protocols")
     private List<Protocol> protocols = null;
     @JsonProperty("grease")
-    private List<Object> grease = null;
+    private List<Grease> grease = null;
     @JsonProperty("ciphers")
     private List<Cipher> ciphers = null;
     @JsonProperty("pfs")
@@ -140,12 +142,12 @@ public class ScanResult {
     }
 
     @JsonProperty("grease")
-    public List<Object> getGrease() {
+    public List<Grease> getGrease() {
         return grease;
     }
 
     @JsonProperty("grease")
-    public void setGrease(List<Object> grease) {
+    public void setGrease(List<Grease> grease) {
         this.grease = grease;
     }
 

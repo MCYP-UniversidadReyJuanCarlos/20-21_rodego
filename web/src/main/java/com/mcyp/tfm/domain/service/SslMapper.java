@@ -32,4 +32,5 @@ public class SslMapper {
 			throw new MapperException("Cannot map or read file", e);
 		}
 	}
+	
 }

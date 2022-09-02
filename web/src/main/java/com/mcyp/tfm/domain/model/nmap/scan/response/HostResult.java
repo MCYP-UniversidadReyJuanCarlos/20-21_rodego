@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mcyp.tfm.domain.model.dirsearch.Dirsearch;
 import com.mcyp.tfm.domain.model.nmap.scan.Hostname;
 import com.mcyp.tfm.domain.model.ssh.Ssh;
-import com.mcyp.tfm.domain.model.testssl.Ssl;
+import com.mcyp.tfm.domain.model.testssl.SslResponse;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -21,7 +21,7 @@ public class HostResult {
 	private AddressesResult addresses;
 	private VendorResult vendor;
 	private StatusResult status;
-	private Ssl ssl;
+	private SslResponse ssl;
 	private Dirsearch directories;
 	private Ssh ssh;
 	

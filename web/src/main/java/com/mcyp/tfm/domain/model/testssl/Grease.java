@@ -7,6 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -18,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "finding"
 })
 @Generated("jsonschema2pojo")
-public class ServerDefault {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Grease {
 
     @JsonProperty("id")
     private String id;
@@ -28,7 +30,7 @@ public class ServerDefault {
     private String finding;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    
+
     @JsonProperty("id")
     public String getId() {
         return id;

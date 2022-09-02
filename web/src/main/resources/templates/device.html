@@ -1,6 +1,6 @@
 {{>layout/header}}
 <body>
- 	<div class="container py-4 px-3 mx-auto shadow-lg">
+ 	<div class="container py-4 mx-auto shadow-lg">
 		
 		<h2 style="text-align: center;">Device {{host.addresses.ipv4}} </h2>
 	
@@ -23,20 +23,20 @@
 				<table class="table">
 				  <thead>
 				    <tr>
-				      <th scope="col">port</th>
-				      <th scope="col">state</th>
-				      <th scope="col">reason</th>
-				      <th scope="col">name</th>
-				      <th scope="col">product</th>
-				      <th scope="col">version</th>
-				      <th scope="col">extrainfo</th>
-				      <th scope="col">conf</th>
+				      <th scope="col">Port</th>
+				      <th scope="col">State</th>
+				      <th scope="col">Reason</th>
+				      <th scope="col">Name</th>
+				      <th scope="col">Product</th>
+				      <th scope="col">Version</th>
+				      <th scope="col">Extrainfo</th>
+				      <th scope="col">Conf</th>
 				      <th scope="col">Handle</th>
 				    </tr>
 				  </thead>
 				  <tbody>
 				   {{#host.tcp}}
-				  <tr>
+				  <tr >
 				      <td>{{port}}</td>
 				      <td>{{state}}</td>
 				      <td>{{reason}}</td>
@@ -84,6 +84,23 @@
 				{{/host.ssh}}
 		  	</div>
 		  	<div class="tab-pane fade col-lg-6 mx-auto" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+			  	{{#host.ssl}}
+			  		<p>
+					  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					    Server defaults
+					  </button>
+					</p>
+			  		{{#host.ssl.highVulns}}
+			  		
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					    {{#severity}}
+			  				<p class="text-bg-danger p-3">{{severity}}</p>
+			  			{{/severity}}
+					  </div>
+					</div>
+			  		{{/host.ssl.highVulns}}
+			  	{{/host.ssl}}
 		  		{{^host.ssl}}
   					<div class="card">
 					  <div class="card-body">
@@ -96,7 +113,7 @@
 		  		{{#host.directories}}
 				<div class="card">
 				  <div class="card-body">
-				    After and ssh audit you can see some recommendations about protocols used by your device.
+				  	Results of a web path scanner. You should review if any them could disclosure critical information or configuration(users, passwords, tokens, api keys).
 				  </div>
 				</div>
 				<table class="table">
