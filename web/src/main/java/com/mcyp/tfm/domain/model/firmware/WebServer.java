@@ -1,15 +1,15 @@
 package com.mcyp.tfm.domain.model.firmware;
 
-import java.util.List;
-
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class WebServer {
 
-	private List<String> apache;
-	private List<String> lighttpd;
-	private List<String> alphapd;
-	private List<String> httpd;
+	private boolean apache;
+	private boolean lighttpd;
+	private boolean alphapd;
+	private boolean httpd;
 	
 }

@@ -17,7 +17,7 @@ public class FirmwareController {
 	
 	@GetMapping("/firmware")
     public ModelAndView displayArticle(Map<String, Object> model) {
-        model.put("lines", firmwareService.getFileLine());
+        model.put("firmware", firmwareService.createResponse());
         
         return new ModelAndView("firmware", model);
     }
