@@ -19,7 +19,7 @@ import com.mcyp.tfm.domain.model.testssl.VulnerabilityResponse;
 @Service
 public class AnalysisService {
 
-	private static final List<String> severities = List.of("LOW", "MEDIUM", "HIGH", "CRITICAL");;
+	private static final List<String> severities = List.of("INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL");;
 	
 	@Autowired
 	private ScanMapper scanMapper;
@@ -76,29 +76,16 @@ public class AnalysisService {
 			.setCriticalVulns(this.getVulns(vulns, "CRITICAL"))
 			.setHighVulns(this.getVulns(vulns, "HIGH"))
 			.setMediumVulns(this.getVulns(vulns, "MEDIUM"))
-			.setLowVulns(this.getVulns(vulns, "LOW"));
+			.setLowVulns(this.getVulns(vulns, "LOW"))
+			.setInfoVulns(this.getVulns(vulns, "INFO"));
 	}
 	
 	private List<VulnerabilityResponse> getVulns(List<VulnerabilityResponse> vulns, String severity){
 		return vulns.stream().filter(v -> severity.equals(v.getSeverity())).collect(Collectors.toList());
 	}
 	
-	private List<VulnerabilityResponse> filterResult(Ssl ssl) {
-		
+	private List<VulnerabilityResponse> filterResult(Ssl ssl) {	
 		ScanResult scanResult = ssl.getScanResult().stream().findFirst().get();	
-//		scanResult.setProtocols(scanResult.getProtocols().stream()
-//			.filter(c -> severities.contains(c.getSeverity()))
-//			.collect(Collectors.toList()));
-//		scanResult.setGrease(scanResult.getGrease().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setCiphers(scanResult.getCiphers().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setPfs(scanResult.getPfs().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setServerPreferences(scanResult.getServerPreferences().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setServerDefaults(scanResult.getServerDefaults().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setHeaderResponse(scanResult.getHeaderResponse().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setVulnerabilities(scanResult.getVulnerabilities().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setCipherTests(scanResult.getCipherTests().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));
-//		scanResult.setBrowserSimulations(scanResult.getBrowserSimulations().stream().filter(c -> severities.contains(c.getSeverity())).collect(Collectors.toList()));	
-//		ssl.setScanResult(List.of(scanResult));
 		
 		List<VulnerabilityResponse> vulns = this.mapProtocols(scanResult);
 		vulns.addAll(this.mapGreases(scanResult));

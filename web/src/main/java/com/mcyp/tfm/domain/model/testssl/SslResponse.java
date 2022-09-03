@@ -22,6 +22,7 @@ public class SslResponse {
     List<VulnerabilityResponse> criticalVulns;
     List<VulnerabilityResponse> mediumVulns;
     List<VulnerabilityResponse> lowVulns;
+    List<VulnerabilityResponse> infoVulns;
     
     private Integer scanTime;
 
