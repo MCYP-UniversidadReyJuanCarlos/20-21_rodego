@@ -1,8 +1,15 @@
 {{>layout/header}}
 <body>
-	<div class="container">
+	<div class="container py-4 mx-auto shadow-lg">
+	
+	<h2 style="text-align: center;"> Firmware analysis </h2>
+		<div class="card">
+			<div class="card-body">Results of a firmware analysis. 
+			You could see files or information that could lead to a vulnerability due to a bad configurations, untrusted certificates, hard coded password... </div>
+		</div>
+
 		<div class="starter-template" align="center">
-			<h1 style="text-align: center;">Firmware analysis</h1>
+			
 			{{#lines}}
 			<h5 style="display: none;">{{line}}</h5>
 			<h4 style="display: none;">{{line}}</h4>
