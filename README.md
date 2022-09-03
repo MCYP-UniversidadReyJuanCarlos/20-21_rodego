@@ -22,23 +22,20 @@ You need Docker and Docker Compose installed.
 To run the project execute the following commands from the main directory.
 
 ```
-docker-compose up -d web nmap firmware firmwalker
+docker-compose up -d web nmap firmware firmwalker directories testssl
 
-docker-compose run --rm cli 
+docker-compose run --rm cli
 ```
 
 ## Basic usage
 
 Once the tool is running you can choose between one of the next options:
 
-- List and identify devices
-- Firmware analysis
-- Analyze open ports and exposed services
-- List possible vulnerabilities.
+- Run analysis
+- Firmware analysis: Firmware file should be in the data folder within the project.
 
 ### Notes:
 
 You need to run the service cli each time you want to use the tool.
 
 This tool has been tested in a Linux environment, it should run on Windows and Mac but you could face some limitations with Docker on those OS.
-
