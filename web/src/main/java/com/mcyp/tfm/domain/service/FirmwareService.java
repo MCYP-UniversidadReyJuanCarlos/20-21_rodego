@@ -112,12 +112,10 @@ public class FirmwareService {
 				.setDb(this.filterLine(lines, ".sqlite"))
 				.setSqlite3(this.filterLine(lines, ".sqlite3")))
 			.setEmail(new Email().setEmails(this.filterLine(lines, "@")))
-			.setMd5Hash(null)
 			.setPassword(new PasswordResponse()
 				.setPasswd(this.filterLine(lines, "passwd"))
 				.setPsk(this.filterLine(lines, "shadow"))
 				.setShadow(this.filterLine(lines, ".psk")))
-			.setPattern(null)
 			.setScript(new Script().setScripts(this.filterLine(lines, ".sh")))
 			.setSsh(new Ssh()
 				.setAuthorizedKeys(this.filterLine(lines, "authorized_keys"))
@@ -144,7 +142,6 @@ public class FirmwareService {
 	}
 	
 	private boolean isServerActive(List<String> lines, String server) {
-		log.error("server: " + server + " " + this.filterLine(lines, server));
 		return this.filterLine(lines, server).size() > 0;
 	}
 	
