@@ -23,7 +23,6 @@ class Analysis(Resource):
         logging.error('ip' + ip)
         scanner = nmap.PortScanner()
         result = scanner.scan(ip + '/24', arguments='-n -Pn -v -sV --privileged')
-        #result = scanner.scan('192.168.100.105', arguments='-n -Pn -v -sV --privileged')
 
         hosts = scanner.all_hosts()
         logging.error(hosts)
@@ -41,7 +40,6 @@ class Analysis(Resource):
         with open('data/nmap/result.json', 'w') as fp:
             json.dump(result, fp)
 
-        #os.system("sudo nmap --script=vuln -p- " + ip2 + " -oX data/nmap/"+ ip2 + "_vulns.xml")
         return jsonify({'message': 'In order to show the results go to: http://localhost:9090/home'})
 
 def process_https(host, https_port):

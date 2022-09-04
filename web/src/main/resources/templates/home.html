@@ -31,13 +31,13 @@
 				<a href="host/{{addresses.ipv4}}" class="list-group-item list-group-item-action py-3"
 						aria-current="true" id="submit">
 					{{#addresses.ipv4}}
-						{{addresses.ipv4}}
+					<p>IP: 	{{addresses.ipv4}}</p>
 					{{/addresses.ipv4}}
-						{{#addresses.mac}}
-				    	{{addresses.mac}}
+					{{#addresses.mac}}
+				    <p>MAC: {{addresses.mac}}</p>
 				    {{/addresses.mac}}
 				    {{#vendor.name}}
-				    	{{vendor.name}}
+				    <p>Vendor:	{{vendor.name}}</p>
 				    {{/vendor.name}}
 				</a>   
 				{{/hosts}}

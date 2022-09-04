@@ -49,7 +49,7 @@ services:
     build: ./directories/
     image: directories
     volumes:
-      - ./data/directories:/usr/src/app/data
+      - ./data/directories:/usr/src/app/data:rw
     network_mode: host
   testssl:
     container_name: testssl
