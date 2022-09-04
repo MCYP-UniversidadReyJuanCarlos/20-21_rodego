@@ -25,21 +25,23 @@
 			<div class="tab-pane fade show active col-lg-6 mx-auto"
 				id="devices-tab-pane" role="tabpanel" aria-labelledby="devices-tab"
 				tabindex="0">
-				<p class="lead mb-4">List of devices found within your network</p>
+				<p class="lead mb-4 p-2">List of devices found within your network</p>
 				<div class="list-group">
 				{{#hosts}}
-				<a href="host/{{addresses.ipv4}}" class="list-group-item list-group-item-action py-3"
+				<button type="button" class="btn btn-light">
+				<a  href="host/{{addresses.ipv4}}" class="list-group-item list-group-item-action py-3"
 						aria-current="true" id="submit">
 					{{#addresses.ipv4}}
-					<p>IP: 	{{addresses.ipv4}}</p>
+					<p class="lh-1 fs-6 ">IP: 	{{addresses.ipv4}}</p>
 					{{/addresses.ipv4}}
 					{{#addresses.mac}}
-				    <p>MAC: {{addresses.mac}}</p>
+				    <p class="lh-1 fs-6">MAC: {{addresses.mac}}</p>
 				    {{/addresses.mac}}
 				    {{#vendor.name}}
-				    <p>Vendor:	{{vendor.name}}</p>
+				    <p class="lh-1 fs-6">Vendor:	{{vendor.name}}</p>
 				    {{/vendor.name}}
 				</a>   
+				</button>
 				{{/hosts}}
 				</div>
 			</div>
