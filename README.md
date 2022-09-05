@@ -34,6 +34,10 @@ Once the tool is running you can choose between one of the next options:
 - Run analysis
 - Firmware analysis: Firmware file should be in the data folder within the project.
 
+When analysis is finisehd you could see the results on your browser by opening:
+
+[Application home]](http://localhost:9090/home)
+
 ### Notes:
 
 You need to run the service cli each time you want to use the tool.
