@@ -27,6 +27,8 @@ docker-compose up -d web nmap firmware firmwalker directories testssl
 docker-compose run --rm cli
 ```
 
+also you could execute the start.sh file within the project folder.
+
 ## Basic usage
 
 Once the tool is running you can choose between one of the next options:
