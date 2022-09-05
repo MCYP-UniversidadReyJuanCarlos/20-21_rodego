@@ -38,9 +38,24 @@ services:
     privileged: true
     build: ./web/
     image: web
-    ports: 
+    ports:
       - 9090:9090
     volumes:
       - ./data:/data
-    environment: 
+    environment:
       TFM_DATA: ${TFM_DATA:-/data}
+  directories:
+    container_name: directories
+    build: ./directories/
+    image: directories
+    volumes:
+      - ./data/directories:/usr/src/app/data:rw
+    network_mode: host
+  testssl:
+    container_name: testssl
+    build: ./testssl/
+    image: testssl
+    user: 'root'
+    volumes:
+      - ./data/testssl:/home/testssl/data:rw
+    network_mode: host

@@ -28,23 +28,13 @@ class NumberValidator(Validator):
                 cursor_position=len(document.text))
 
 class CliApplication():
-    def main(self):       
+    def main(self):
         action = answers['actions']
 
-        if action == 'devices':
-            self.list_devices()
+        if action == 'analysis':
+            self.analysis()
         elif action == 'firmware':
             self.firmware()
-        elif action == 'portsAndServices':
-            self.devices_services_and_ports()
-        elif action == 'vulnerabilities':
-            self.vulnerabilities()
-        
-    def list_devices(self):
-        print('listDevices')
-        response = requests.get("http://localhost:5000/devices")
-        data = response.json()
-        print(data['message'])
 
     def firmware(self):
         print('firmware')
@@ -65,16 +55,9 @@ class CliApplication():
         data = response.json()
         print(data['message'])
 
-    def devices_services_and_ports(self):
-        print('devicesServicesAndPorts')
-        response = requests.get("http://localhost:5000/services")
-        data = response.json()
-        print(data['message'])
-    
-    def vulnerabilities(self):
-        ip = answers['vulnerabilities']
-        print('vulnerabilities')
-        response = requests.get("http://localhost:5000/vulnerabilities/" + ip)
+    def analysis(self):
+        print('analysis')
+        response = requests.get("http://localhost:5000/analysis")
         data = response.json()
         print(data['message'])
 
@@ -88,24 +71,14 @@ questions = [
         'message': 'Choose one option to run the application',
         'choices': [
             {
-                'key': 'devices',
-                'name': 'List and identify devices',
-                'value': 'devices'
+                'key': 'analysis',
+                'name': 'Run analysis',
+                'value': 'analysis'
             },
             {
                 'key': 'firmware',
                 'name': 'Firmware analysis',
                 'value': 'firmware'
-            },
-            {
-                'key': 'portsAndServices',
-                'name': 'Analyze open ports and exposed services',
-                'value': 'portsAndServices'
-            },
-            {
-                'key': 'vulnerabilities',
-                'name': 'List possbile vulnerbilities',
-                'value': 'vulnerabilities'
             }
         ]
     },
@@ -115,13 +88,6 @@ questions = [
         'message': 'Introduce the file name to analyze (example: firmware.bin)',
         'filter': lambda val: str(val),
         'when': lambda answers: answers['actions'] == 'firmware'
-    },
-    {
-        'type': 'input',
-        'name': 'vulnerabilities',
-        'message': 'Introduce the target ip',
-        'filter': lambda val: str(val),
-        'when': lambda answers: answers['actions'] == 'vulnerabilities'
     }
 ]
 

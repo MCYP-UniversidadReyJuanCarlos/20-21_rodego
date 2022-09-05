@@ -1,4 +1,4 @@
-FROM python:buster
+FROM python:3.6.14-buster
 
 RUN pip install regex
 RUN pip install PyInquirer requests

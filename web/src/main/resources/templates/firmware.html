@@ -1,18 +1,306 @@
 {{>layout/header}}
 <body>
- 	<div class="container">
-		<div class="starter-template" align="center">
-		<h1 style="text-align: center;">Firmware analysis</h1>
-		{{#lines}}
-		<h5 style="display: none;">{{line}}</h5>
-		<h4 style="display: none;">{{line}}</h4>
-		<ul>		
-			<li style="display: none;">{{line}}</li>
-		</ul>
-		{{/lines}}
+	<div class="container py-4 mx-auto shadow-lg">
+	
+	<h2 style="text-align: center;"> Firmware analysis </h2>
+		<div class="card">
+			<div class="card-body">Results of a firmware analysis. 
+			You could see files or information(emails, urls, ips) that could lead to a vulnerability due to a bad configurations, untrusted certificates, hard coded password... </div>
 		</div>
-		
-		<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<ul class="nav nav-pills mb-3 justify-content-center p-3" id="pills-tab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" id="emails-tab" data-bs-toggle="pill" data-bs-target="#emails" type="button" role="tab" aria-controls="emails" aria-selected="true">Emails</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="host-tab" data-bs-toggle="pill" data-bs-target="#host" type="button" role="tab" aria-controls="host" aria-selected="false">Hosts</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="ip-tab" data-bs-toggle="pill" data-bs-target="#ip" type="button" role="tab" aria-controls="ip" aria-selected="false">IPs</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="web-tab" data-bs-toggle="pill" data-bs-target="#web" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">Active web servers</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="db-tab" data-bs-toggle="pill" data-bs-target="#db" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">Database files</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="conf-tab" data-bs-toggle="pill" data-bs-target="#conf" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">Config files</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="ssh-tab" data-bs-toggle="pill" data-bs-target="#ssh" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">SSH files</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="ssl-tab" data-bs-toggle="pill" data-bs-target="#ssl" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">SSL files</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="script-tab" data-bs-toggle="pill" data-bs-target="#script" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">Script files</button>
+			</li>
+			<li class="nav-item" role="presentation">
+			    <button class="nav-link" id="pass-tab" data-bs-toggle="pill" data-bs-target="#pass" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false">Password files</button>
+			</li>
+		</ul>
+		<div class="tab-content" id="pills-tabContent">
+			<div class="tab-pane fade show active col-lg-6 mx-auto" id="emails" role="tabpanel" aria-labelledby="emails-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Emails</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				   {{#firmware.email.emails}}
+				  <tr >
+				      <td>{{.}}</td>
+				    </tr>	
+				  {{/firmware.email.emails}}			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="host" role="tabpanel" aria-labelledby="host" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">URLs used by device</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				   {{#firmware.url.urls}}
+				  <tr >
+				      <td>{{.}}</td>
+				    </tr>	
+				  {{/firmware.url.urls}}			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="ip" role="tabpanel" aria-labelledby="ip-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">IPs used by device</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				   {{#firmware.addresses.addresses}}
+				  <tr >
+				      <td>{{.}}</td>
+				    </tr>	
+				  {{/firmware.addresses.addresses}}			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="web" role="tabpanel" aria-labelledby="web-tab" tabindex="0">
+				<table class="table">
+					  <thead>
+					    <tr>
+					      <th scope="col">Lighttpd</th>
+					      <th scope="col">Apache</th>
+					      <th scope="col">Alphapd</th>
+					      <th scope="col">Httpd</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  <tr >
+					  	{{#firmware.webServer.lighttpd}}
+					      <td>Active</td>
+					    {{/firmware.webServer.lighttpd}}
+					    {{^firmware.webServer.lighttpd}}
+					      <td>Inactive</td>
+					    {{/firmware.webServer.lighttpd}}
+					    {{#firmware.webServer.apache}}
+					    	<td>Active</td>
+					    {{/firmware.webServer.apache}}
+					    {{^firmware.webServer.apache}}
+					    	<td>Inactive</td>
+					    {{/firmware.webServer.apache}}
+					    {{#firmware.webServer.alphapd}}
+					    	<td>Active</td>
+					    {{/firmware.webServer.alphapd}}
+					    {{^firmware.webServer.alphapd}}
+					    	<td>Inactive</td>
+					    {{/firmware.webServer.alphapd}}
+					    {{#firmware.webServer.httpd}}
+					    	<td>Active</td>
+					    {{/firmware.webServer.httpd}}
+					    {{^firmware.webServer.httpd}}
+					    	<td>Inactive</td>
+					    {{/firmware.webServer.httpd}}	
+					   </tr>					  		    
+					</tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="conf" role="tabpanel" aria-labelledby="conf-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Configuration files found within the firmware. Should review in order to find misconfigurations</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.configuration.conf}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.configuration.conf}}
+				    {{#firmware.configuration.cfg}}
+				    <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.configuration.cfg}}
+				    {{#firmware.configuration.ini}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.configuration.ini}}				  			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="db" role="tabpanel" aria-labelledby="db-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Database files.</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.database.db}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.database.db}}
+				    {{#firmware.database.sqlite}}
+				    <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.database.sqlite}}
+				    {{#firmware.database.sqlite3}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.database.sqlite3}}				  			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="ssh" role="tabpanel" aria-labelledby="ssh-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">SSH files.</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.ssh.authorizedKeys}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.ssh.authorizedKeys}}
+				    {{#firmware.ssh.hostKey}}
+				    <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssh.hostKey}}
+				    {{#firmware.ssh.idRsa}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssh.idRsa}}
+				    {{#firmware.ssh.idDsa}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssh.idDsa}}
+				    {{#firmware.ssh.pub}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssh.pub}}			  			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="ssl" role="tabpanel" aria-labelledby="ssl-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">SSL files.</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.ssl.crt}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.ssl.crt}}
+				    {{#firmware.ssl.pem}}
+				    <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssl.pem}}
+				    {{#firmware.ssl.cer}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssl.cer}}
+				    {{#firmware.ssl.p7b}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssl.p7b}}
+				    {{#firmware.ssl.p12}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssl.p12}}
+				     {{#firmware.ssl.key}}
+				     <tr >
+				      	<td>{{.}}</td>
+				     </tr>
+				    {{/firmware.ssl.key}}			  			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="script" role="tabpanel" aria-labelledby="script-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Scripts files found within the device. This kind of file are usually used to start services.</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.script.scripts}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.script.scripts}}			  			    
+				  </tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade col-lg-6 mx-auto" id="pass" role="tabpanel" aria-labelledby="pass-tab" tabindex="0">
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Passwords files should be reviewed in order to find weak passwords or not encrypted.</th>
+				    </tr>
+				  </thead>
+				  <tbody>				  
+				  	{{#firmware.password.passwd}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.password.passwd}}		
+				    {{#firmware.password.shadow}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.password.shadow}}	
+				    {{#firmware.password.psk}}
+				  	<tr >
+				      <td>{{.}}</td>
+				    </tr>
+				    {{/firmware.password.psk}}		  			    
+				  </tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </body>
 {{>layout/footer}}
