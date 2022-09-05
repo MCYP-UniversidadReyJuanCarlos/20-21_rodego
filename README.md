@@ -36,7 +36,7 @@ Once the tool is running you can choose between one of the next options:
 
 When analysis is finisehd you could see the results on your browser by opening:
 
-[Application home]](http://localhost:9090/home)
+[Application home](http://localhost:9090/home)
 
 ### Notes:
 
